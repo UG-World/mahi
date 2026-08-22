@@ -1,0 +1,1776 @@
+<!-- =====================================================
+     MEMORY SWIPER + MUSIC PLAYER
+===================================================== -->
+
+<section class="memory-music-section">
+
+  <div class="memory-heading">
+    <span>OUR LITTLE MEMORIES</span>
+    <h2>Swipe Through The Moments 💗</h2>
+    <p>25 little memories, one beautiful story.</p>
+  </div>
+
+
+  <!-- PHOTO SWIPER -->
+
+  <div class="memory-swiper" id="memorySwiper">
+
+    <div class="memory-track" id="memoryTrack">
+
+      <!-- Photos are generated automatically -->
+
+    </div>
+
+  </div>
+
+
+  <div class="photo-counter">
+    <span id="photoNumber">01</span>
+    <span class="counter-line">/</span>
+    <span>25</span>
+  </div>
+
+
+  <!-- MUSIC PLAYER -->
+
+  <div class="music-player">
+
+    <div class="music-top">
+
+      <div class="music-info">
+
+        <div class="music-disc" id="musicDisc">
+          ♪
+        </div>
+
+        <div>
+          <div class="music-title" id="musicTitle">
+            Birthday Song
+          </div>
+
+          <div class="music-subtitle" id="musicArtist">
+            Song 01
+          </div>
+        </div>
+
+      </div>
+
+      <button
+        class="main-play"
+        id="mainPlay"
+        aria-label="Play">
+        ▶
+      </button>
+
+    </div>
+
+
+    <!-- PROGRESS -->
+
+    <div class="progress-area">
+
+      <span id="currentTime">
+        0:00
+      </span>
+
+      <input
+        type="range"
+        id="progressBar"
+        min="0"
+        max="100"
+        value="0"
+      >
+
+      <span id="duration">
+        0:00
+      </span>
+
+    </div>
+
+
+    <!-- SONG LIST -->
+
+    <div class="song-list">
+
+      <button
+        class="song-item active"
+        data-song="0">
+
+        <span class="song-number">
+          01
+        </span>
+
+        <span class="song-details">
+          <strong>Veere</strong>
+          <small>For this beautiful day ✨</small>
+        </span>
+
+        <span class="song-play">
+          ▶
+        </span>
+
+      </button>
+
+
+      <button
+        class="song-item"
+        data-song="1">
+
+        <span class="song-number">
+          02
+        </span>
+
+        <span class="song-details">
+          <strong>Aarzu</strong>
+          <small>A song for you 💗</small>
+        </span>
+
+        <span class="song-play">
+          ▶
+        </span>
+
+      </button>
+
+
+      <button
+        class="song-item"
+        data-song="2">
+
+        <span class="song-number">
+          03
+        </span>
+
+        <span class="song-details">
+          <strong>One More Smile</strong>
+          <small>Just because you deserve it 🌸</small>
+        </span>
+
+        <span class="song-play">
+          ▶
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<style>
+
+/* =====================================================
+   MEMORY SECTION
+===================================================== */
+
+.memory-music-section {
+
+  width: 100%;
+
+  padding:
+    90px 0 110px;
+
+  overflow: hidden;
+
+  position: relative;
+
+}
+
+
+/* HEADING */
+
+.memory-heading {
+
+  text-align: center;
+
+  margin-bottom: 42px;
+
+  padding: 0 20px;
+
+}
+
+.memory-heading span {
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 3px;
+
+  color: #e95091;
+
+}
+
+.memory-heading h2 {
+
+  margin-top: 9px;
+
+  font-family:
+    "Playfair Display",
+    serif;
+
+  font-size:
+    clamp(30px, 6vw, 48px);
+
+  color: #593b51;
+
+}
+
+.memory-heading p {
+
+  margin-top: 8px;
+
+  font-family:
+    "Caveat",
+    cursive;
+
+  font-size:
+    clamp(21px, 4vw, 28px);
+
+  color: #886b7d;
+
+}
+
+
+/* =====================================================
+   SWIPER
+===================================================== */
+
+.memory-swiper {
+
+  width: 100%;
+
+  overflow: hidden;
+
+  touch-action: pan-y;
+
+  cursor: grab;
+
+}
+
+.memory-swiper:active {
+  cursor: grabbing;
+}
+
+
+.memory-track {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 22px;
+
+  width: max-content;
+
+  transform:
+    translateX(0);
+
+  transition:
+    transform
+    .65s
+    cubic-bezier(.22,.61,.36,1);
+
+  will-change: transform;
+
+}
+
+
+/* =====================================================
+   PHOTO CARD
+===================================================== */
+
+.memory-photo {
+
+  width:
+    clamp(
+      250px,
+      42vw,
+      440px
+    );
+
+  aspect-ratio: 1 / 1;
+
+  flex-shrink: 0;
+
+  position: relative;
+
+  border-radius: 28px;
+
+  overflow: hidden;
+
+  background:
+    rgba(255,255,255,.5);
+
+  border:
+    1px solid
+    rgba(255,255,255,.75);
+
+  box-shadow:
+    0 25px 65px
+    rgba(91,45,82,.18);
+
+  transition:
+    transform .65s ease,
+    filter .65s ease,
+    opacity .65s ease,
+    box-shadow .65s ease;
+
+  filter:
+    blur(4px);
+
+  opacity: .38;
+
+  transform:
+    scale(.82);
+}
+
+
+.memory-photo img {
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  user-select: none;
+
+  -webkit-user-drag: none;
+}
+
+
+/* CENTER PHOTO */
+
+.memory-photo.active {
+
+  filter:
+    blur(0);
+
+  opacity: 1;
+
+  transform:
+    scale(1);
+
+  box-shadow:
+    0 30px 85px
+    rgba(91,45,82,.25);
+
+  z-index: 3;
+}
+
+
+/* SIDE PHOTOS */
+
+.memory-photo.near {
+
+  filter:
+    blur(4px);
+
+  opacity: .48;
+
+  transform:
+    scale(.84);
+
+}
+
+
+/* =====================================================
+   PHOTO OVERLAY
+===================================================== */
+
+.memory-photo::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(50,25,45,.20),
+      transparent 35%
+    );
+
+}
+
+
+/* =====================================================
+   COUNTER
+===================================================== */
+
+.photo-counter {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin-top: 22px;
+
+  color: #8c6e82;
+
+  font-size: 13px;
+
+  letter-spacing: 2px;
+
+}
+
+.photo-counter span:first-child {
+
+  color: #e95091;
+
+  font-weight: 700;
+
+  font-size: 16px;
+
+}
+
+.counter-line {
+
+  opacity: .45;
+
+}
+
+
+/* =====================================================
+   MUSIC PLAYER
+===================================================== */
+
+.music-player {
+
+  width:
+    min(
+      92vw,
+      650px
+    );
+
+  margin:
+    45px auto 0;
+
+  padding:
+    22px;
+
+  border-radius: 28px;
+
+  background:
+    rgba(255,255,255,.43);
+
+  border:
+    1px solid
+    rgba(255,255,255,.78);
+
+  backdrop-filter:
+    blur(28px)
+    saturate(130%);
+
+  -webkit-backdrop-filter:
+    blur(28px)
+    saturate(130%);
+
+  box-shadow:
+    0 25px 70px
+    rgba(91,45,82,.15);
+
+}
+
+
+/* TOP */
+
+.music-top {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+}
+
+
+.music-info {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  min-width: 0;
+
+}
+
+
+.music-disc {
+
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ed609a,
+      #9670df
+    );
+
+  color: white;
+
+  font-size: 22px;
+
+  box-shadow:
+    0 8px 20px
+    rgba(207,70,130,.25);
+
+}
+
+
+.music-disc.playing {
+
+  animation:
+    musicRotate
+    4s
+    linear infinite;
+
+}
+
+@keyframes musicRotate {
+
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+.music-title {
+
+  font-weight: 700;
+
+  font-size: 15px;
+
+  color: #593b51;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+}
+
+
+.music-subtitle {
+
+  margin-top: 3px;
+
+  font-size: 11px;
+
+  color: #997d90;
+
+}
+
+
+/* MAIN PLAY */
+
+.main-play {
+
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ed609a,
+      #9670df
+    );
+
+  color: white;
+
+  cursor: pointer;
+
+  font-size: 16px;
+
+  padding-left: 3px;
+
+  box-shadow:
+    0 9px 22px
+    rgba(207,70,130,.25);
+
+  transition:
+    transform .25s ease;
+
+}
+
+.main-play:hover {
+
+  transform:
+    scale(1.08);
+
+}
+
+
+/* =====================================================
+   PROGRESS
+===================================================== */
+
+.progress-area {
+
+  display: grid;
+
+  grid-template-columns:
+    36px 1fr 36px;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 20px;
+
+}
+
+.progress-area span {
+
+  font-size: 10px;
+
+  color: #997d90;
+
+}
+
+
+#progressBar {
+
+  width: 100%;
+
+  height: 4px;
+
+  appearance: none;
+
+  -webkit-appearance: none;
+
+  border-radius: 10px;
+
+  background:
+    rgba(120,90,110,.16);
+
+  cursor: pointer;
+
+}
+
+
+#progressBar::-webkit-slider-thumb {
+
+  appearance: none;
+
+  -webkit-appearance: none;
+
+  width: 13px;
+  height: 13px;
+
+  border-radius: 50%;
+
+  background: #e95091;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 2px 7px
+    rgba(207,70,130,.25);
+
+}
+
+
+#progressBar::-moz-range-thumb {
+
+  width: 13px;
+  height: 13px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #e95091;
+
+}
+
+
+/* =====================================================
+   SONG LIST
+===================================================== */
+
+.song-list {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+  margin-top: 20px;
+
+}
+
+
+.song-item {
+
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    12px 13px;
+
+  border: 1px solid transparent;
+
+  border-radius: 17px;
+
+  background:
+    rgba(255,255,255,.24);
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition:
+    background .25s ease,
+    transform .25s ease,
+    border .25s ease;
+
+}
+
+
+.song-item:hover {
+
+  background:
+    rgba(255,255,255,.52);
+
+  transform:
+    translateX(3px);
+
+}
+
+
+.song-item.active {
+
+  background:
+    rgba(255,255,255,.63);
+
+  border:
+    1px solid
+    rgba(233,80,145,.18);
+
+}
+
+
+.song-number {
+
+  width: 25px;
+
+  color: #e95091;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+}
+
+
+.song-details {
+
+  flex: 1;
+
+  min-width: 0;
+
+}
+
+
+.song-details strong {
+
+  display: block;
+
+  color: #593b51;
+
+  font-size: 13px;
+
+}
+
+
+.song-details small {
+
+  display: block;
+
+  margin-top: 2px;
+
+  color: #997d90;
+
+  font-size: 10px;
+
+}
+
+
+.song-play {
+
+  width: 27px;
+  height: 27px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: #e95091;
+
+  font-size: 10px;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+  .memory-music-section {
+
+    padding:
+      65px 0 80px;
+
+  }
+
+
+  .memory-heading {
+
+    margin-bottom: 28px;
+
+  }
+
+
+  .memory-track {
+
+    gap: 12px;
+
+  }
+
+
+  .memory-photo {
+
+    width:
+      72vw;
+
+    max-width:
+      330px;
+
+    border-radius: 23px;
+
+  }
+
+
+  .memory-photo.near {
+
+    filter:
+      blur(4px);
+
+    opacity: .42;
+
+    transform:
+      scale(.82);
+
+  }
+
+
+  .music-player {
+
+    width:
+      92vw;
+
+    padding:
+      18px;
+
+    border-radius: 23px;
+
+  }
+
+
+  .music-disc {
+
+    width: 43px;
+    height: 43px;
+
+  }
+
+
+  .main-play {
+
+    width: 43px;
+    height: 43px;
+
+  }
+
+}
+
+
+/* =====================================================
+   VERY SMALL PHONES
+===================================================== */
+
+@media (max-width: 360px) {
+
+  .memory-photo {
+
+    width:
+      76vw;
+
+  }
+
+
+  .music-player {
+
+    padding:
+      15px;
+
+  }
+
+
+  .song-item {
+
+    padding:
+      10px;
+
+  }
+
+}
+
+</style>
+
+
+<script>
+
+/* =====================================================
+   25 PHOTO DATA
+===================================================== */
+
+const photoCount = 25;
+
+const track =
+  document.getElementById(
+    "memoryTrack"
+  );
+
+const swiper =
+  document.getElementById(
+    "memorySwiper"
+  );
+
+const photoNumber =
+  document.getElementById(
+    "photoNumber"
+  );
+
+
+let currentPhoto = 0;
+
+
+/* CREATE ALL 25 PHOTOS */
+
+for (
+  let i = 1;
+  i <= photoCount;
+  i++
+) {
+
+  const card =
+    document.createElement("div");
+
+  card.className =
+    "memory-photo";
+
+  card.dataset.index =
+    i - 1;
+
+
+  const img =
+    document.createElement("img");
+
+  img.src =
+    `photos/image${i}.png`;
+
+  img.alt =
+    `Memory ${i}`;
+
+  img.draggable =
+    false;
+
+  img.loading =
+    i <= 3
+      ? "eager"
+      : "lazy";
+
+
+  card.appendChild(img);
+
+  track.appendChild(card);
+
+}
+
+
+const photos =
+  [...document.querySelectorAll(
+    ".memory-photo"
+  )];
+
+
+/* =====================================================
+   POSITION PHOTO
+===================================================== */
+
+function updatePhoto(
+  index,
+  animate = true
+) {
+
+  if (index < 0) {
+    index = 0;
+  }
+
+  if (
+    index >= photoCount
+  ) {
+    index =
+      photoCount - 1;
+  }
+
+
+  currentPhoto =
+    index;
+
+
+  const active =
+    photos[index];
+
+
+  const swiperWidth =
+    swiper.clientWidth;
+
+  const photoWidth =
+    active.offsetWidth;
+
+
+  /*
+    Center current photo exactly.
+  */
+
+  const centerOffset =
+    (
+      swiperWidth -
+      photoWidth
+    ) / 2;
+
+
+  const targetX =
+    centerOffset -
+    (
+      index *
+      (
+        photoWidth +
+        parseFloat(
+          getComputedStyle(
+            track
+          ).gap
+        )
+      )
+    );
+
+
+  track.style.transition =
+    animate
+      ? "transform .65s cubic-bezier(.22,.61,.36,1)"
+      : "none";
+
+
+  track.style.transform =
+    `translate3d(${targetX}px,0,0)`;
+
+
+  photos.forEach(
+    (photo, i) => {
+
+      photo.classList.remove(
+        "active",
+        "near"
+      );
+
+
+      if (
+        i === index
+      ) {
+
+        photo.classList.add(
+          "active"
+        );
+
+      }
+
+      else if (
+        Math.abs(i - index) <= 1
+      ) {
+
+        photo.classList.add(
+          "near"
+        );
+
+      }
+
+    }
+  );
+
+
+  photoNumber.textContent =
+    String(index + 1)
+      .padStart(2, "0");
+
+}
+
+
+/* =====================================================
+   INITIAL
+===================================================== */
+
+window.addEventListener(
+  "load",
+  () => {
+
+    updatePhoto(
+      0,
+      false
+    );
+
+  }
+);
+
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    updatePhoto(
+      currentPhoto,
+      false
+    );
+
+  }
+);
+
+
+/* =====================================================
+   TOUCH SWIPE
+===================================================== */
+
+let touchStartX = 0;
+let touchStartY = 0;
+
+let touchEndX = 0;
+
+
+swiper.addEventListener(
+  "touchstart",
+  event => {
+
+    touchStartX =
+      event.touches[0].clientX;
+
+    touchStartY =
+      event.touches[0].clientY;
+
+  },
+  {
+    passive: true
+  }
+);
+
+
+swiper.addEventListener(
+  "touchend",
+  event => {
+
+    touchEndX =
+      event.changedTouches[0].clientX;
+
+
+    const diff =
+      touchEndX -
+      touchStartX;
+
+
+    const vertical =
+      Math.abs(
+        event.changedTouches[0].clientY -
+        touchStartY
+      );
+
+
+    /*
+      Ignore vertical gestures.
+    */
+
+    if (
+      vertical > 80
+    ) {
+      return;
+    }
+
+
+    if (
+      Math.abs(diff) < 45
+    ) {
+      return;
+    }
+
+
+    if (
+      diff < 0
+    ) {
+
+      /*
+        Swipe left
+        => next photo
+      */
+
+      updatePhoto(
+        currentPhoto + 1
+      );
+
+    }
+
+    else {
+
+      /*
+        Swipe right
+        => previous photo
+      */
+
+      updatePhoto(
+        currentPhoto - 1
+      );
+
+    }
+
+  },
+  {
+    passive: true
+  }
+);
+
+
+/* =====================================================
+   MOUSE DRAG FOR PC
+===================================================== */
+
+let mouseDown = false;
+let mouseStart = 0;
+
+
+swiper.addEventListener(
+  "mousedown",
+  event => {
+
+    mouseDown = true;
+
+    mouseStart =
+      event.clientX;
+
+  }
+);
+
+
+window.addEventListener(
+  "mouseup",
+  event => {
+
+    if (!mouseDown) {
+      return;
+    }
+
+    mouseDown = false;
+
+
+    const diff =
+      event.clientX -
+      mouseStart;
+
+
+    if (
+      Math.abs(diff) < 50
+    ) {
+      return;
+    }
+
+
+    if (
+      diff < 0
+    ) {
+
+      updatePhoto(
+        currentPhoto + 1
+      );
+
+    }
+
+    else {
+
+      updatePhoto(
+        currentPhoto - 1
+      );
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   MUSIC PLAYER
+===================================================== */
+
+const songs = [
+
+  {
+    title:
+      "Birthday Song",
+
+    artist:
+      "For this beautiful day ✨",
+
+    file:
+      "veere.mp3"
+  },
+
+  {
+    title:
+      "Our Little Memory",
+
+    artist:
+      "A song for our story 💗",
+
+    file:
+      "aarzu.mp3"
+  },
+
+  {
+    title:
+      "One More Smile",
+
+    artist:
+      "Just because you deserve it 🌸",
+
+    file:
+      "aarzu.mp3"
+  }
+
+];
+
+
+const audio =
+  new Audio();
+
+
+audio.preload =
+  "metadata";
+
+
+audio.volume =
+  .65;
+
+
+const mainPlay =
+  document.getElementById(
+    "mainPlay"
+  );
+
+
+const musicTitle =
+  document.getElementById(
+    "musicTitle"
+  );
+
+
+const musicArtist =
+  document.getElementById(
+    "musicArtist"
+  );
+
+
+const musicDisc =
+  document.getElementById(
+    "musicDisc"
+  );
+
+
+const currentTime =
+  document.getElementById(
+    "currentTime"
+  );
+
+
+const duration =
+  document.getElementById(
+    "duration"
+  );
+
+
+const progressBar =
+  document.getElementById(
+    "progressBar"
+  );
+
+
+const songItems =
+  [...document.querySelectorAll(
+    ".song-item"
+  )];
+
+
+let currentSong = 0;
+
+
+/* FORMAT TIME */
+
+function formatTime(
+  seconds
+) {
+
+  if (
+    !Number.isFinite(seconds)
+  ) {
+
+    return "0:00";
+
+  }
+
+
+  const minutes =
+    Math.floor(
+      seconds / 60
+    );
+
+
+  const secs =
+    Math.floor(
+      seconds % 60
+    );
+
+
+  return (
+    minutes +
+    ":" +
+    String(secs)
+      .padStart(2, "0")
+  );
+
+}
+
+
+/* LOAD SONG */
+
+function loadSong(
+  index,
+  autoplay = false
+) {
+
+  currentSong =
+    index;
+
+
+  const song =
+    songs[index];
+
+
+  audio.src =
+    song.file;
+
+
+  musicTitle.textContent =
+    song.title;
+
+
+  musicArtist.textContent =
+    song.artist;
+
+
+  currentTime.textContent =
+    "0:00";
+
+
+  duration.textContent =
+    "0:00";
+
+
+  progressBar.value =
+    0;
+
+
+  songItems.forEach(
+    (item, i) => {
+
+      item.classList.toggle(
+        "active",
+        i === index
+      );
+
+    }
+  );
+
+
+  if (autoplay) {
+
+    audio.play()
+      .then(
+        updatePlayUI
+      )
+      .catch(
+        () => {}
+      );
+
+  }
+
+}
+
+
+/* PLAY / PAUSE */
+
+function togglePlay() {
+
+  if (
+    audio.paused
+  ) {
+
+    audio.play()
+      .then(
+        updatePlayUI
+      )
+      .catch(
+        () => {}
+      );
+
+  }
+
+  else {
+
+    audio.pause();
+
+  }
+
+}
+
+
+/* UI */
+
+function updatePlayUI() {
+
+  if (
+    audio.paused
+  ) {
+
+    mainPlay.textContent =
+      "▶";
+
+    musicDisc.classList.remove(
+      "playing"
+    );
+
+  }
+
+  else {
+
+    mainPlay.textContent =
+      "Ⅱ";
+
+    musicDisc.classList.add(
+      "playing"
+    );
+
+  }
+
+}
+
+
+mainPlay.addEventListener(
+  "click",
+  togglePlay
+);
+
+
+/* SONG SELECTION */
+
+songItems.forEach(
+  item => {
+
+    item.addEventListener(
+      "click",
+      () => {
+
+        const index =
+          Number(
+            item.dataset.song
+          );
+
+        loadSong(
+          index,
+          true
+        );
+
+      }
+    );
+
+  }
+);
+
+
+/* TIME UPDATE */
+
+audio.addEventListener(
+  "timeupdate",
+  () => {
+
+    currentTime.textContent =
+      formatTime(
+        audio.currentTime
+      );
+
+
+    if (
+      audio.duration
+    ) {
+
+      const percentage =
+        (
+          audio.currentTime /
+          audio.duration
+        ) * 100;
+
+
+      progressBar.value =
+        percentage;
+
+    }
+
+  }
+);
+
+
+/* METADATA */
+
+audio.addEventListener(
+  "loadedmetadata",
+  () => {
+
+    duration.textContent =
+      formatTime(
+        audio.duration
+      );
+
+  }
+);
+
+
+/* PROGRESS SEEK */
+
+progressBar.addEventListener(
+  "input",
+  () => {
+
+    if (
+      audio.duration
+    ) {
+
+      audio.currentTime =
+        (
+          progressBar.value /
+          100
+        ) *
+        audio.duration;
+
+    }
+
+  }
+);
+
+
+/* SONG END */
+
+audio.addEventListener(
+  "ended",
+  () => {
+
+    const next =
+      (
+        currentSong + 1
+      ) %
+      songs.length;
+
+
+    loadSong(
+      next,
+      true
+    );
+
+  }
+);
+
+
+/* PLAY STATE */
+
+audio.addEventListener(
+  "play",
+  updatePlayUI
+);
+
+audio.addEventListener(
+  "pause",
+  updatePlayUI
+);
+
+
+/* INITIAL SONG */
+
+loadSong(
+  0,
+  false
+);
+
+</script>
