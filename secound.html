@@ -1,1405 +1,925 @@
-<!-- =====================================================
-     MEMORY SWIPER + MUSIC PLAYER
-===================================================== -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Memories ❤️</title>
 
-<section class="memory-music-section">
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-  <div class="memory-heading">
-    <span>OUR LITTLE MEMORIES</span>
-    <h2>Swipe Through The Moments 💗</h2>
-    <p>25 little memories, one beautiful story.</p>
+html,body{
+  width:100%;
+  min-height:100%;
+  overflow-x:hidden;
+}
+
+body{
+  background:linear-gradient(135deg,#fff7fb,#fdf0f7);
+  color:#493444;
+  font-family:Arial,sans-serif;
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.page{
+  min-height:100vh;
+  padding:50px 0 70px;
+  overflow:hidden;
+}
+
+.title{
+  text-align:center;
+  margin-bottom:30px;
+  padding:0 20px;
+}
+
+.title small{
+  color:#e85b98;
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:3px;
+}
+
+.title h1{
+  margin-top:8px;
+  font-family:Georgia,serif;
+  font-size:clamp(30px,6vw,46px);
+  font-weight:500;
+}
+
+.title p{
+  margin-top:8px;
+  color:#9b8191;
+  font-size:13px;
+}
+
+/* =========================
+   MAIN CARD
+========================= */
+
+.music-card{
+  width:min(94vw,440px);
+  margin:auto;
+  padding:16px;
+
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:28px;
+
+  box-shadow:
+    0 25px 70px rgba(75,35,65,.16);
+
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
+}
+
+/* =========================
+   PHOTO AREA
+========================= */
+
+.photo-window{
+  width:100%;
+  aspect-ratio:1/1;
+
+  position:relative;
+  overflow:hidden;
+
+  border-radius:22px;
+
+  touch-action:pan-y;
+  user-select:none;
+
+  background:#f3e8ef;
+}
+
+/*
+  Horizontal photo rail.
+  Main image center.
+  Previous/next images remain visible
+  on both sides and blurred.
+*/
+
+.photo-track{
+  height:100%;
+  width:max-content;
+
+  display:flex;
+  align-items:center;
+
+  gap:12px;
+
+  transition:
+    transform .6s cubic-bezier(.22,.61,.36,1);
+}
+
+/* Individual photo */
+
+.photo{
+  width:min(calc(94vw - 32px),408px);
+  aspect-ratio:1/1;
+
+  flex-shrink:0;
+
+  overflow:hidden;
+
+  border-radius:19px;
+
+  opacity:.35;
+  filter:blur(7px);
+
+  transform:scale(.80);
+
+  transition:
+    opacity .6s ease,
+    filter .6s ease,
+    transform .6s ease;
+}
+
+.photo.active{
+  opacity:1;
+  filter:blur(0);
+  transform:scale(1);
+}
+
+.photo img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  display:block;
+
+  pointer-events:none;
+
+  user-select:none;
+}
+
+/* =========================
+   PHOTO ARROWS
+========================= */
+
+.photo-button{
+  position:absolute;
+
+  top:50%;
+  transform:translateY(-50%);
+
+  z-index:10;
+
+  width:38px;
+  height:38px;
+
+  border:0;
+  border-radius:50%;
+
+  background:rgba(255,255,255,.72);
+
+  color:#583b50;
+
+  font-size:25px;
+
+  cursor:pointer;
+
+  box-shadow:0 7px 20px rgba(50,20,45,.12);
+
+  backdrop-filter:blur(10px);
+}
+
+.photo-button:active{
+  transform:translateY(-50%) scale(.9);
+}
+
+.photo-left{
+  left:10px;
+}
+
+.photo-right{
+  right:10px;
+}
+
+/* =========================
+   PHOTO NUMBER
+========================= */
+
+.photo-number{
+  text-align:center;
+
+  margin-top:12px;
+
+  font-size:10px;
+
+  letter-spacing:2px;
+
+  color:#a08798;
+}
+
+.photo-number strong{
+  color:#e85b98;
+}
+
+/* =========================
+   SPOTIFY STYLE PLAYER
+========================= */
+
+.player{
+  padding:18px 4px 2px;
+}
+
+/* Song information */
+
+.song-info{
+  text-align:center;
+}
+
+.song-name{
+  font-size:17px;
+  font-weight:700;
+
+  color:#493444;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.artist{
+  margin-top:5px;
+
+  color:#99818f;
+
+  font-size:11px;
+}
+
+/* =========================
+   PROGRESS BAR
+========================= */
+
+.progress-area{
+  display:grid;
+
+  grid-template-columns:36px 1fr 36px;
+
+  gap:8px;
+
+  align-items:center;
+
+  margin-top:17px;
+}
+
+.time{
+  color:#92798a;
+  font-size:9px;
+}
+
+.progress{
+  width:100%;
+  height:4px;
+
+  appearance:none;
+  -webkit-appearance:none;
+
+  background:#eadde5;
+
+  border-radius:10px;
+
+  cursor:pointer;
+}
+
+.progress::-webkit-slider-thumb{
+  appearance:none;
+  -webkit-appearance:none;
+
+  width:12px;
+  height:12px;
+
+  border-radius:50%;
+
+  background:#e85b98;
+}
+
+.progress::-moz-range-thumb{
+  width:12px;
+  height:12px;
+
+  border:0;
+
+  border-radius:50%;
+
+  background:#e85b98;
+}
+
+/* =========================
+   MUSIC CONTROLS
+========================= */
+
+.controls{
+  display:flex;
+
+  justify-content:center;
+  align-items:center;
+
+  gap:27px;
+
+  margin-top:15px;
+}
+
+.music-button{
+  width:35px;
+  height:35px;
+
+  border:0;
+
+  background:transparent;
+
+  color:#493444;
+
+  font-size:19px;
+
+  cursor:pointer;
+}
+
+.play-button{
+  width:49px;
+  height:49px;
+
+  border:0;
+  border-radius:50%;
+
+  background:linear-gradient(
+    135deg,
+    #e85b98,
+    #9b70dc
+  );
+
+  color:white;
+
+  font-size:16px;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 9px 25px rgba(205,75,135,.25);
+}
+
+.music-button:active,
+.play-button:active{
+  transform:scale(.92);
+}
+
+/* =========================
+   HINT
+========================= */
+
+.hint{
+  text-align:center;
+
+  margin-top:18px;
+
+  color:#a58c9c;
+
+  font-size:9px;
+
+  letter-spacing:.7px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+  .page{
+    padding-top:40px;
+  }
+
+  .title{
+    margin-bottom:22px;
+  }
+
+  .music-card{
+    width:92vw;
+    padding:13px;
+    border-radius:24px;
+  }
+
+  .photo-window{
+    border-radius:19px;
+  }
+
+  .photo{
+    width:calc(92vw - 26px);
+    border-radius:17px;
+  }
+
+  .controls{
+    gap:22px;
+  }
+
+  .play-button{
+    width:46px;
+    height:46px;
+  }
+}
+
+@media(max-width:360px){
+
+  .music-card{
+    width:94vw;
+  }
+
+  .song-name{
+    font-size:15px;
+  }
+
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="page">
+
+  <div class="title">
+    <small>OUR LITTLE MEMORIES</small>
+
+    <h1>Beautiful Moments ❤️</h1>
+
+    <p>Swipe left or right to explore.</p>
   </div>
 
 
-  <!-- PHOTO SWIPER -->
+  <div class="music-card">
 
-  <div class="memory-swiper" id="memorySwiper">
+    <!-- =========================
+         PHOTO SECTION
+    ========================== -->
 
-    <div class="memory-track" id="memoryTrack">
+    <div
+      class="photo-window"
+      id="photoWindow"
+    >
 
-      <!-- Photos are generated automatically -->
+      <div
+        class="photo-track"
+        id="photoTrack"
+      ></div>
+
+
+      <button
+        class="photo-button photo-left"
+        id="photoPrev"
+      >
+        ‹
+      </button>
+
+
+      <button
+        class="photo-button photo-right"
+        id="photoNext"
+      >
+        ›
+      </button>
 
     </div>
 
-  </div>
+
+    <div class="photo-number">
+      <strong id="photoCurrent">01</strong>
+      &nbsp;/&nbsp;
+      23
+    </div>
 
 
-  <div class="photo-counter">
-    <span id="photoNumber">01</span>
-    <span class="counter-line">/</span>
-    <span>25</span>
-  </div>
+    <!-- =========================
+         MUSIC PLAYER
+    ========================== -->
 
+    <div class="player">
 
-  <!-- MUSIC PLAYER -->
+      <div class="song-info">
 
-  <div class="music-player">
-
-    <div class="music-top">
-
-      <div class="music-info">
-
-        <div class="music-disc" id="musicDisc">
-          ♪
+        <div
+          class="song-name"
+          id="songName"
+        >
+          Birthday Song
         </div>
 
-        <div>
-          <div class="music-title" id="musicTitle">
-            Birthday Song
-          </div>
-
-          <div class="music-subtitle" id="musicArtist">
-            Song 01
-          </div>
+        <div
+          class="artist"
+          id="artist"
+        >
+          A little song for you ✨
         </div>
 
       </div>
 
-      <button
-        class="main-play"
-        id="mainPlay"
-        aria-label="Play">
-        ▶
-      </button>
 
-    </div>
+      <!-- TIMESTAMP + PROGRESS -->
 
+      <div class="progress-area">
 
-    <!-- PROGRESS -->
-
-    <div class="progress-area">
-
-      <span id="currentTime">
-        0:00
-      </span>
-
-      <input
-        type="range"
-        id="progressBar"
-        min="0"
-        max="100"
-        value="0"
-      >
-
-      <span id="duration">
-        0:00
-      </span>
-
-    </div>
-
-
-    <!-- SONG LIST -->
-
-    <div class="song-list">
-
-      <button
-        class="song-item active"
-        data-song="0">
-
-        <span class="song-number">
-          01
+        <span
+          class="time"
+          id="currentTime"
+        >
+          0:00
         </span>
 
-        <span class="song-details">
-          <strong>Veere</strong>
-          <small>For this beautiful day ✨</small>
+
+        <input
+          class="progress"
+          id="progress"
+          type="range"
+          min="0"
+          max="100"
+          value="0"
+        >
+
+
+        <span
+          class="time"
+          id="duration"
+        >
+          0:00
         </span>
 
-        <span class="song-play">
+      </div>
+
+
+      <!-- CONTROLS -->
+
+      <div class="controls">
+
+        <button
+          class="music-button"
+          id="previousSong"
+        >
+          ⏮
+        </button>
+
+
+        <button
+          class="play-button"
+          id="playPause"
+        >
           ▶
-        </span>
-
-      </button>
+        </button>
 
 
-      <button
-        class="song-item"
-        data-song="1">
+        <button
+          class="music-button"
+          id="nextSong"
+        >
+          ⏭
+        </button>
 
-        <span class="song-number">
-          02
-        </span>
-
-        <span class="song-details">
-          <strong>Aarzu</strong>
-          <small>A song for you 💗</small>
-        </span>
-
-        <span class="song-play">
-          ▶
-        </span>
-
-      </button>
-
-
-      <button
-        class="song-item"
-        data-song="2">
-
-        <span class="song-number">
-          03
-        </span>
-
-        <span class="song-details">
-          <strong>One More Smile</strong>
-          <small>Just because you deserve it 🌸</small>
-        </span>
-
-        <span class="song-play">
-          ▶
-        </span>
-
-      </button>
+      </div>
 
     </div>
 
   </div>
 
-</section>
 
+  <div class="hint">
+    PHOTO — SWIPE &nbsp; • &nbsp; MUSIC — ⏮ / ⏭
+  </div>
 
-<style>
-
-/* =====================================================
-   MEMORY SECTION
-===================================================== */
-
-.memory-music-section {
-
-  width: 100%;
-
-  padding:
-    90px 0 110px;
-
-  overflow: hidden;
-
-  position: relative;
-
-}
-
-
-/* HEADING */
-
-.memory-heading {
-
-  text-align: center;
-
-  margin-bottom: 42px;
-
-  padding: 0 20px;
-
-}
-
-.memory-heading span {
-
-  font-size: 11px;
-
-  font-weight: 700;
-
-  letter-spacing: 3px;
-
-  color: #e95091;
-
-}
-
-.memory-heading h2 {
-
-  margin-top: 9px;
-
-  font-family:
-    "Playfair Display",
-    serif;
-
-  font-size:
-    clamp(30px, 6vw, 48px);
-
-  color: #593b51;
-
-}
-
-.memory-heading p {
-
-  margin-top: 8px;
-
-  font-family:
-    "Caveat",
-    cursive;
-
-  font-size:
-    clamp(21px, 4vw, 28px);
-
-  color: #886b7d;
-
-}
-
-
-/* =====================================================
-   SWIPER
-===================================================== */
-
-.memory-swiper {
-
-  width: 100%;
-
-  overflow: hidden;
-
-  touch-action: pan-y;
-
-  cursor: grab;
-
-}
-
-.memory-swiper:active {
-  cursor: grabbing;
-}
-
-
-.memory-track {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 22px;
-
-  width: max-content;
-
-  transform:
-    translateX(0);
-
-  transition:
-    transform
-    .65s
-    cubic-bezier(.22,.61,.36,1);
-
-  will-change: transform;
-
-}
-
-
-/* =====================================================
-   PHOTO CARD
-===================================================== */
-
-.memory-photo {
-
-  width:
-    clamp(
-      250px,
-      42vw,
-      440px
-    );
-
-  aspect-ratio: 1 / 1;
-
-  flex-shrink: 0;
-
-  position: relative;
-
-  border-radius: 28px;
-
-  overflow: hidden;
-
-  background:
-    rgba(255,255,255,.5);
-
-  border:
-    1px solid
-    rgba(255,255,255,.75);
-
-  box-shadow:
-    0 25px 65px
-    rgba(91,45,82,.18);
-
-  transition:
-    transform .65s ease,
-    filter .65s ease,
-    opacity .65s ease,
-    box-shadow .65s ease;
-
-  filter:
-    blur(4px);
-
-  opacity: .38;
-
-  transform:
-    scale(.82);
-}
-
-
-.memory-photo img {
-
-  width: 100%;
-  height: 100%;
-
-  display: block;
-
-  object-fit: cover;
-
-  user-select: none;
-
-  -webkit-user-drag: none;
-}
-
-
-/* CENTER PHOTO */
-
-.memory-photo.active {
-
-  filter:
-    blur(0);
-
-  opacity: 1;
-
-  transform:
-    scale(1);
-
-  box-shadow:
-    0 30px 85px
-    rgba(91,45,82,.25);
-
-  z-index: 3;
-}
-
-
-/* SIDE PHOTOS */
-
-.memory-photo.near {
-
-  filter:
-    blur(4px);
-
-  opacity: .48;
-
-  transform:
-    scale(.84);
-
-}
-
-
-/* =====================================================
-   PHOTO OVERLAY
-===================================================== */
-
-.memory-photo::after {
-
-  content: "";
-
-  position: absolute;
-
-  inset: 0;
-
-  pointer-events: none;
-
-  background:
-    linear-gradient(
-      to top,
-      rgba(50,25,45,.20),
-      transparent 35%
-    );
-
-}
-
-
-/* =====================================================
-   COUNTER
-===================================================== */
-
-.photo-counter {
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  gap: 9px;
-
-  margin-top: 22px;
-
-  color: #8c6e82;
-
-  font-size: 13px;
-
-  letter-spacing: 2px;
-
-}
-
-.photo-counter span:first-child {
-
-  color: #e95091;
-
-  font-weight: 700;
-
-  font-size: 16px;
-
-}
-
-.counter-line {
-
-  opacity: .45;
-
-}
-
-
-/* =====================================================
-   MUSIC PLAYER
-===================================================== */
-
-.music-player {
-
-  width:
-    min(
-      92vw,
-      650px
-    );
-
-  margin:
-    45px auto 0;
-
-  padding:
-    22px;
-
-  border-radius: 28px;
-
-  background:
-    rgba(255,255,255,.43);
-
-  border:
-    1px solid
-    rgba(255,255,255,.78);
-
-  backdrop-filter:
-    blur(28px)
-    saturate(130%);
-
-  -webkit-backdrop-filter:
-    blur(28px)
-    saturate(130%);
-
-  box-shadow:
-    0 25px 70px
-    rgba(91,45,82,.15);
-
-}
-
-
-/* TOP */
-
-.music-top {
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 15px;
-
-}
-
-
-.music-info {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 13px;
-
-  min-width: 0;
-
-}
-
-
-.music-disc {
-
-  width: 48px;
-  height: 48px;
-
-  flex-shrink: 0;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background:
-    linear-gradient(
-      135deg,
-      #ed609a,
-      #9670df
-    );
-
-  color: white;
-
-  font-size: 22px;
-
-  box-shadow:
-    0 8px 20px
-    rgba(207,70,130,.25);
-
-}
-
-
-.music-disc.playing {
-
-  animation:
-    musicRotate
-    4s
-    linear infinite;
-
-}
-
-@keyframes musicRotate {
-
-  from {
-    transform: rotate(0);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-
-}
-
-
-.music-title {
-
-  font-weight: 700;
-
-  font-size: 15px;
-
-  color: #593b51;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-}
-
-
-.music-subtitle {
-
-  margin-top: 3px;
-
-  font-size: 11px;
-
-  color: #997d90;
-
-}
-
-
-/* MAIN PLAY */
-
-.main-play {
-
-  width: 48px;
-  height: 48px;
-
-  flex-shrink: 0;
-
-  border: none;
-
-  border-radius: 50%;
-
-  background:
-    linear-gradient(
-      135deg,
-      #ed609a,
-      #9670df
-    );
-
-  color: white;
-
-  cursor: pointer;
-
-  font-size: 16px;
-
-  padding-left: 3px;
-
-  box-shadow:
-    0 9px 22px
-    rgba(207,70,130,.25);
-
-  transition:
-    transform .25s ease;
-
-}
-
-.main-play:hover {
-
-  transform:
-    scale(1.08);
-
-}
-
-
-/* =====================================================
-   PROGRESS
-===================================================== */
-
-.progress-area {
-
-  display: grid;
-
-  grid-template-columns:
-    36px 1fr 36px;
-
-  align-items: center;
-
-  gap: 8px;
-
-  margin-top: 20px;
-
-}
-
-.progress-area span {
-
-  font-size: 10px;
-
-  color: #997d90;
-
-}
-
-
-#progressBar {
-
-  width: 100%;
-
-  height: 4px;
-
-  appearance: none;
-
-  -webkit-appearance: none;
-
-  border-radius: 10px;
-
-  background:
-    rgba(120,90,110,.16);
-
-  cursor: pointer;
-
-}
-
-
-#progressBar::-webkit-slider-thumb {
-
-  appearance: none;
-
-  -webkit-appearance: none;
-
-  width: 13px;
-  height: 13px;
-
-  border-radius: 50%;
-
-  background: #e95091;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 2px 7px
-    rgba(207,70,130,.25);
-
-}
-
-
-#progressBar::-moz-range-thumb {
-
-  width: 13px;
-  height: 13px;
-
-  border: none;
-
-  border-radius: 50%;
-
-  background: #e95091;
-
-}
-
-
-/* =====================================================
-   SONG LIST
-===================================================== */
-
-.song-list {
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 7px;
-
-  margin-top: 20px;
-
-}
-
-
-.song-item {
-
-  width: 100%;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px;
-
-  padding:
-    12px 13px;
-
-  border: 1px solid transparent;
-
-  border-radius: 17px;
-
-  background:
-    rgba(255,255,255,.24);
-
-  cursor: pointer;
-
-  text-align: left;
-
-  transition:
-    background .25s ease,
-    transform .25s ease,
-    border .25s ease;
-
-}
-
-
-.song-item:hover {
-
-  background:
-    rgba(255,255,255,.52);
-
-  transform:
-    translateX(3px);
-
-}
-
-
-.song-item.active {
-
-  background:
-    rgba(255,255,255,.63);
-
-  border:
-    1px solid
-    rgba(233,80,145,.18);
-
-}
-
-
-.song-number {
-
-  width: 25px;
-
-  color: #e95091;
-
-  font-size: 11px;
-
-  font-weight: 700;
-
-}
-
-
-.song-details {
-
-  flex: 1;
-
-  min-width: 0;
-
-}
-
-
-.song-details strong {
-
-  display: block;
-
-  color: #593b51;
-
-  font-size: 13px;
-
-}
-
-
-.song-details small {
-
-  display: block;
-
-  margin-top: 2px;
-
-  color: #997d90;
-
-  font-size: 10px;
-
-}
-
-
-.song-play {
-
-  width: 27px;
-  height: 27px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  color: #e95091;
-
-  font-size: 10px;
-
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 600px) {
-
-  .memory-music-section {
-
-    padding:
-      65px 0 80px;
-
-  }
-
-
-  .memory-heading {
-
-    margin-bottom: 28px;
-
-  }
-
-
-  .memory-track {
-
-    gap: 12px;
-
-  }
-
-
-  .memory-photo {
-
-    width:
-      72vw;
-
-    max-width:
-      330px;
-
-    border-radius: 23px;
-
-  }
-
-
-  .memory-photo.near {
-
-    filter:
-      blur(4px);
-
-    opacity: .42;
-
-    transform:
-      scale(.82);
-
-  }
-
-
-  .music-player {
-
-    width:
-      92vw;
-
-    padding:
-      18px;
-
-    border-radius: 23px;
-
-  }
-
-
-  .music-disc {
-
-    width: 43px;
-    height: 43px;
-
-  }
-
-
-  .main-play {
-
-    width: 43px;
-    height: 43px;
-
-  }
-
-}
-
-
-/* =====================================================
-   VERY SMALL PHONES
-===================================================== */
-
-@media (max-width: 360px) {
-
-  .memory-photo {
-
-    width:
-      76vw;
-
-  }
-
-
-  .music-player {
-
-    padding:
-      15px;
-
-  }
-
-
-  .song-item {
-
-    padding:
-      10px;
-
-  }
-
-}
-
-</style>
+</div>
 
 
 <script>
 
 /* =====================================================
-   25 PHOTO DATA
+   PHOTO SYSTEM
 ===================================================== */
 
-const photoCount = 25;
+const TOTAL_PHOTOS = 23;
 
-const track =
+const photoTrack =
   document.getElementById(
-    "memoryTrack"
+    "photoTrack"
   );
 
-const swiper =
+const photoWindow =
   document.getElementById(
-    "memorySwiper"
+    "photoWindow"
   );
 
-const photoNumber =
+const photoCurrent =
   document.getElementById(
-    "photoNumber"
+    "photoCurrent"
   );
 
 
-let currentPhoto = 0;
+/* Create image1.png -> image23.png */
 
-
-/* CREATE ALL 25 PHOTOS */
-
-for (
+for(
   let i = 1;
-  i <= photoCount;
+  i <= TOTAL_PHOTOS;
   i++
-) {
+){
 
-  const card =
-    document.createElement("div");
+  const photo =
+    document.createElement(
+      "div"
+    );
 
-  card.className =
-    "memory-photo";
+  photo.className =
+    "photo";
 
-  card.dataset.index =
+  photo.dataset.index =
     i - 1;
 
 
-  const img =
-    document.createElement("img");
+  const image =
+    document.createElement(
+      "img"
+    );
 
-  img.src =
-    `photos/image${i}.png`;
+  image.src =
+    `image${i}.png`;
 
-  img.alt =
+  image.alt =
     `Memory ${i}`;
 
-  img.draggable =
+  image.draggable =
     false;
 
-  img.loading =
-    i <= 3
-      ? "eager"
-      : "lazy";
 
+  photo.appendChild(
+    image
+  );
 
-  card.appendChild(img);
-
-  track.appendChild(card);
+  photoTrack.appendChild(
+    photo
+  );
 
 }
 
 
 const photos =
-  [...document.querySelectorAll(
-    ".memory-photo"
-  )];
+  Array.from(
+    document.querySelectorAll(
+      ".photo"
+    )
+  );
 
 
-/* =====================================================
-   POSITION PHOTO
-===================================================== */
+let photoIndex = 0;
 
-function updatePhoto(
+
+/* Move current photo to center */
+
+function showPhoto(
   index,
   animate = true
-) {
+){
 
-  if (index < 0) {
-    index = 0;
-  }
-
-  if (
-    index >= photoCount
-  ) {
-    index =
-      photoCount - 1;
-  }
-
-
-  currentPhoto =
-    index;
-
-
-  const active =
-    photos[index];
-
-
-  const swiperWidth =
-    swiper.clientWidth;
-
-  const photoWidth =
-    active.offsetWidth;
-
-
-  /*
-    Center current photo exactly.
-  */
-
-  const centerOffset =
-    (
-      swiperWidth -
-      photoWidth
-    ) / 2;
-
-
-  const targetX =
-    centerOffset -
-    (
-      index *
-      (
-        photoWidth +
-        parseFloat(
-          getComputedStyle(
-            track
-          ).gap
-        )
+  index =
+    Math.max(
+      0,
+      Math.min(
+        index,
+        TOTAL_PHOTOS - 1
       )
     );
 
 
-  track.style.transition =
+  photoIndex =
+    index;
+
+
+  const current =
+    photos[index];
+
+
+  const gap =
+    parseFloat(
+      getComputedStyle(
+        photoTrack
+      ).gap
+    ) || 12;
+
+
+  const width =
+    current.offsetWidth;
+
+
+  const windowWidth =
+    photoWindow.clientWidth;
+
+
+  const x =
+    (windowWidth - width) / 2
+    -
+    index * (width + gap);
+
+
+  photoTrack.style.transition =
     animate
-      ? "transform .65s cubic-bezier(.22,.61,.36,1)"
+      ? "transform .6s cubic-bezier(.22,.61,.36,1)"
       : "none";
 
 
-  track.style.transform =
-    `translate3d(${targetX}px,0,0)`;
+  photoTrack.style.transform =
+    `translate3d(${x}px,0,0)`;
 
 
   photos.forEach(
-    (photo, i) => {
+    (photo,i)=>{
 
-      photo.classList.remove(
+      photo.classList.toggle(
         "active",
-        "near"
-      );
-
-
-      if (
         i === index
-      ) {
-
-        photo.classList.add(
-          "active"
-        );
-
-      }
-
-      else if (
-        Math.abs(i - index) <= 1
-      ) {
-
-        photo.classList.add(
-          "near"
-        );
-
-      }
+      );
 
     }
   );
 
 
-  photoNumber.textContent =
+  photoCurrent.textContent =
     String(index + 1)
-      .padStart(2, "0");
+      .padStart(2,"0");
 
 }
 
 
-/* =====================================================
-   INITIAL
-===================================================== */
+/* Initial */
 
 window.addEventListener(
   "load",
-  () => {
-
-    updatePhoto(
+  ()=>{
+    showPhoto(
       0,
       false
     );
-
   }
 );
 
+
+/* Keep center correct on resize */
 
 window.addEventListener(
   "resize",
-  () => {
-
-    updatePhoto(
-      currentPhoto,
+  ()=>{
+    showPhoto(
+      photoIndex,
       false
     );
-
   }
 );
+
+
+/* Buttons */
+
+document
+  .getElementById(
+    "photoNext"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+      showPhoto(
+        photoIndex + 1
+      );
+    }
+  );
+
+
+document
+  .getElementById(
+    "photoPrev"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+      showPhoto(
+        photoIndex - 1
+      );
+    }
+  );
 
 
 /* =====================================================
    TOUCH SWIPE
+   Only changes PHOTO
 ===================================================== */
 
-let touchStartX = 0;
-let touchStartY = 0;
-
-let touchEndX = 0;
+let startX = 0;
+let startY = 0;
 
 
-swiper.addEventListener(
+photoWindow.addEventListener(
   "touchstart",
-  event => {
+  (event)=>{
 
-    touchStartX =
-      event.touches[0].clientX;
+    startX =
+      event.touches[0]
+        .clientX;
 
-    touchStartY =
-      event.touches[0].clientY;
+    startY =
+      event.touches[0]
+        .clientY;
 
   },
   {
-    passive: true
+    passive:true
   }
 );
 
 
-swiper.addEventListener(
+photoWindow.addEventListener(
   "touchend",
-  event => {
+  (event)=>{
 
-    touchEndX =
-      event.changedTouches[0].clientX;
+    const endX =
+      event.changedTouches[0]
+        .clientX;
+
+    const endY =
+      event.changedTouches[0]
+        .clientY;
 
 
-    const diff =
-      touchEndX -
-      touchStartX;
+    const differenceX =
+      endX - startX;
+
+    const differenceY =
+      endY - startY;
 
 
-    const vertical =
-      Math.abs(
-        event.changedTouches[0].clientY -
-        touchStartY
+    /* Ignore vertical movement */
+
+    if(
+      Math.abs(differenceX) < 45 ||
+      Math.abs(differenceY) > 90
+    ){
+
+      return;
+
+    }
+
+
+    if(
+      differenceX < 0
+    ){
+
+      showPhoto(
+        photoIndex + 1
       );
 
+    }else{
 
-    /*
-      Ignore vertical gestures.
-    */
-
-    if (
-      vertical > 80
-    ) {
-      return;
-    }
-
-
-    if (
-      Math.abs(diff) < 45
-    ) {
-      return;
-    }
-
-
-    if (
-      diff < 0
-    ) {
-
-      /*
-        Swipe left
-        => next photo
-      */
-
-      updatePhoto(
-        currentPhoto + 1
-      );
-
-    }
-
-    else {
-
-      /*
-        Swipe right
-        => previous photo
-      */
-
-      updatePhoto(
-        currentPhoto - 1
+      showPhoto(
+        photoIndex - 1
       );
 
     }
 
   },
   {
-    passive: true
+    passive:true
   }
 );
 
 
 /* =====================================================
-   MOUSE DRAG FOR PC
-===================================================== */
-
-let mouseDown = false;
-let mouseStart = 0;
-
-
-swiper.addEventListener(
-  "mousedown",
-  event => {
-
-    mouseDown = true;
-
-    mouseStart =
-      event.clientX;
-
-  }
-);
-
-
-window.addEventListener(
-  "mouseup",
-  event => {
-
-    if (!mouseDown) {
-      return;
-    }
-
-    mouseDown = false;
-
-
-    const diff =
-      event.clientX -
-      mouseStart;
-
-
-    if (
-      Math.abs(diff) < 50
-    ) {
-      return;
-    }
-
-
-    if (
-      diff < 0
-    ) {
-
-      updatePhoto(
-        currentPhoto + 1
-      );
-
-    }
-
-    else {
-
-      updatePhoto(
-        currentPhoto - 1
-      );
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   MUSIC PLAYER
+   MUSIC SYSTEM
 ===================================================== */
 
 const songs = [
 
   {
-    title:
+    name:
       "Birthday Song",
 
     artist:
-      "For this beautiful day ✨",
+      "A little song for you ✨",
 
     file:
-      "veere.mp3"
+      "song1.mp3"
+
   },
 
   {
-    title:
+    name:
       "Our Little Memory",
 
     artist:
-      "A song for our story 💗",
+      "For this beautiful story 💗",
 
     file:
-      "aarzu.mp3"
-  },
+      "song2.mp3"
 
-  {
-    title:
-      "One More Smile",
-
-    artist:
-      "Just because you deserve it 🌸",
-
-    file:
-      "aarzu.mp3"
   }
 
 ];
@@ -1410,34 +930,48 @@ const audio =
 
 
 audio.preload =
-  "metadata";
-
+  "auto";
 
 audio.volume =
-  .65;
+  0.65;
 
 
-const mainPlay =
+let songIndex = 0;
+
+
+const songName =
   document.getElementById(
-    "mainPlay"
+    "songName"
   );
 
 
-const musicTitle =
+const artist =
   document.getElementById(
-    "musicTitle"
+    "artist"
   );
 
 
-const musicArtist =
+const playPause =
   document.getElementById(
-    "musicArtist"
+    "playPause"
   );
 
 
-const musicDisc =
+const previousSong =
   document.getElementById(
-    "musicDisc"
+    "previousSong"
+  );
+
+
+const nextSong =
+  document.getElementById(
+    "nextSong"
+  );
+
+
+const progress =
+  document.getElementById(
+    "progress"
   );
 
 
@@ -1453,30 +987,17 @@ const duration =
   );
 
 
-const progressBar =
-  document.getElementById(
-    "progressBar"
-  );
-
-
-const songItems =
-  [...document.querySelectorAll(
-    ".song-item"
-  )];
-
-
-let currentSong = 0;
-
-
-/* FORMAT TIME */
+/* Format timestamp */
 
 function formatTime(
   seconds
-) {
+){
 
-  if (
-    !Number.isFinite(seconds)
-  ) {
+  if(
+    !Number.isFinite(
+      seconds
+    )
+  ){
 
     return "0:00";
 
@@ -1499,37 +1020,45 @@ function formatTime(
     minutes +
     ":" +
     String(secs)
-      .padStart(2, "0")
+      .padStart(2,"0")
   );
 
 }
 
 
-/* LOAD SONG */
+/* Load song */
 
 function loadSong(
   index,
-  autoplay = false
-) {
+  shouldPlay = false
+){
 
-  currentSong =
-    index;
+  songIndex =
+    (
+      index +
+      songs.length
+    ) %
+    songs.length;
 
 
   const song =
-    songs[index];
+    songs[songIndex];
 
 
   audio.src =
     song.file;
 
 
-  musicTitle.textContent =
-    song.title;
+  songName.textContent =
+    song.name;
 
 
-  musicArtist.textContent =
+  artist.textContent =
     song.artist;
+
+
+  progress.value =
+    0;
 
 
   currentTime.textContent =
@@ -1540,30 +1069,13 @@ function loadSong(
     "0:00";
 
 
-  progressBar.value =
-    0;
-
-
-  songItems.forEach(
-    (item, i) => {
-
-      item.classList.toggle(
-        "active",
-        i === index
-      );
-
-    }
-  );
-
-
-  if (autoplay) {
+  if(
+    shouldPlay
+  ){
 
     audio.play()
-      .then(
-        updatePlayUI
-      )
       .catch(
-        () => {}
+        ()=>{}
       );
 
   }
@@ -1571,121 +1083,24 @@ function loadSong(
 }
 
 
-/* PLAY / PAUSE */
+/* Play / Pause */
 
-function togglePlay() {
-
-  if (
-    audio.paused
-  ) {
-
-    audio.play()
-      .then(
-        updatePlayUI
-      )
-      .catch(
-        () => {}
-      );
-
-  }
-
-  else {
-
-    audio.pause();
-
-  }
-
-}
-
-
-/* UI */
-
-function updatePlayUI() {
-
-  if (
-    audio.paused
-  ) {
-
-    mainPlay.textContent =
-      "▶";
-
-    musicDisc.classList.remove(
-      "playing"
-    );
-
-  }
-
-  else {
-
-    mainPlay.textContent =
-      "Ⅱ";
-
-    musicDisc.classList.add(
-      "playing"
-    );
-
-  }
-
-}
-
-
-mainPlay.addEventListener(
+playPause.addEventListener(
   "click",
-  togglePlay
-);
+  ()=>{
 
+    if(
+      audio.paused
+    ){
 
-/* SONG SELECTION */
-
-songItems.forEach(
-  item => {
-
-    item.addEventListener(
-      "click",
-      () => {
-
-        const index =
-          Number(
-            item.dataset.song
-          );
-
-        loadSong(
-          index,
-          true
+      audio.play()
+        .catch(
+          ()=>{}
         );
 
-      }
-    );
+    }else{
 
-  }
-);
-
-
-/* TIME UPDATE */
-
-audio.addEventListener(
-  "timeupdate",
-  () => {
-
-    currentTime.textContent =
-      formatTime(
-        audio.currentTime
-      );
-
-
-    if (
-      audio.duration
-    ) {
-
-      const percentage =
-        (
-          audio.currentTime /
-          audio.duration
-        ) * 100;
-
-
-      progressBar.value =
-        percentage;
+      audio.pause();
 
     }
 
@@ -1693,11 +1108,67 @@ audio.addEventListener(
 );
 
 
-/* METADATA */
+/* Previous song */
+
+previousSong.addEventListener(
+  "click",
+  ()=>{
+
+    loadSong(
+      songIndex - 1,
+      true
+    );
+
+  }
+);
+
+
+/* Next song */
+
+nextSong.addEventListener(
+  "click",
+  ()=>{
+
+    loadSong(
+      songIndex + 1,
+      true
+    );
+
+  }
+);
+
+
+/* Play icon */
+
+audio.addEventListener(
+  "play",
+  ()=>{
+
+    playPause.textContent =
+      "Ⅱ";
+
+  }
+);
+
+
+/* Pause icon */
+
+audio.addEventListener(
+  "pause",
+  ()=>{
+
+    playPause.textContent =
+      "▶";
+
+  }
+);
+
+
+/* Metadata loaded */
 
 audio.addEventListener(
   "loadedmetadata",
-  () => {
+  ()=>{
 
     duration.textContent =
       formatTime(
@@ -1708,19 +1179,47 @@ audio.addEventListener(
 );
 
 
-/* PROGRESS SEEK */
+/* Update progress */
 
-progressBar.addEventListener(
-  "input",
-  () => {
+audio.addEventListener(
+  "timeupdate",
+  ()=>{
 
-    if (
+    currentTime.textContent =
+      formatTime(
+        audio.currentTime
+      );
+
+
+    if(
       audio.duration
-    ) {
+    ){
+
+      progress.value =
+        (
+          audio.currentTime /
+          audio.duration
+        ) * 100;
+
+    }
+
+  }
+);
+
+
+/* Seek */
+
+progress.addEventListener(
+  "input",
+  ()=>{
+
+    if(
+      audio.duration
+    ){
 
       audio.currentTime =
         (
-          progressBar.value /
+          progress.value /
           100
         ) *
         audio.duration;
@@ -1731,21 +1230,14 @@ progressBar.addEventListener(
 );
 
 
-/* SONG END */
+/* Song finished */
 
 audio.addEventListener(
   "ended",
-  () => {
-
-    const next =
-      (
-        currentSong + 1
-      ) %
-      songs.length;
-
+  ()=>{
 
     loadSong(
-      next,
+      songIndex + 1,
       true
     );
 
@@ -1753,24 +1245,70 @@ audio.addEventListener(
 );
 
 
-/* PLAY STATE */
-
-audio.addEventListener(
-  "play",
-  updatePlayUI
-);
-
-audio.addEventListener(
-  "pause",
-  updatePlayUI
-);
-
-
-/* INITIAL SONG */
+/* =====================================================
+   FIRST SONG
+===================================================== */
 
 loadSong(
   0,
   false
 );
 
+
+/*
+  Try autoplay immediately.
+  Browser may block audible autoplay.
+*/
+
+window.addEventListener(
+  "load",
+  ()=>{
+
+    audio.play()
+      .catch(
+        ()=>{}
+      );
+
+  }
+);
+
+
+/*
+  If autoplay was blocked,
+  first touch/click starts song1.
+*/
+
+function startAfterInteraction(){
+
+  if(
+    audio.paused
+  ){
+
+    audio.play()
+      .catch(
+        ()=>{}
+      );
+
+  }
+
+
+  document.removeEventListener(
+    "pointerdown",
+    startAfterInteraction
+  );
+
+}
+
+
+document.addEventListener(
+  "pointerdown",
+  startAfterInteraction,
+  {
+    passive:true
+  }
+);
+
 </script>
+
+</body>
+</html>
