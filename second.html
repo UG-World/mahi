@@ -6,6 +6,57 @@
 <title>Our Memories ❤️</title>
 
 <style>
+
+.app-download-actions {
+    width: min(92%, 440px);
+    margin: 24px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-sizing: border-box;
+}
+
+.app-download-actions a {
+    display: block;
+    width: 100%;
+    padding: 16px 20px;
+    box-sizing: border-box;
+    border-radius: 14px;
+    text-align: center;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: clamp(14px, 3.5vw, 17px);
+    font-weight: 700;
+    line-height: 1.4;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    overflow-wrap: anywhere;
+}
+
+.app-download-actions a:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+}
+
+.app-download-actions a:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 4px;
+}
+
+.memory-action {
+    background: #7c3aed;
+    color: #ffffff;
+    border: 2px solid #a78bfa;
+    box-shadow: 0 5px 18px rgba(124, 58, 237, 0.3);
+}
+
+.download-action {
+    background: #16a34a;
+    color: #ffffff;
+    border: 2px solid #4ade80;
+    box-shadow: 0 5px 18px rgba(22, 163, 74, 0.3);
+}
+
+
 *{
   margin:0;
   padding:0;
@@ -452,6 +503,19 @@ body{
 
 
 <body>
+
+  <!-- App Download Buttons -->
+<div class="app-download-actions">
+    <a href="#photoWindow" class="memory-action">
+        Save Your Memories Using Our App
+    </a>
+
+    <a href="https://github.com/UG-World/mahi/releases/latest/download/ACTUAL-APK-FILENAME.apk"
+       class="download-action">
+        ↓ Click for Download
+    </a>
+</div>
+
 
 <div class="page">
 
